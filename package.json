@@ -1,0 +1,22 @@
+{
+  "name": "seed-backend-node",
+  "version": "0.1.0",
+  "description": "Seed for backend api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/indec-it/seed-backend-node.git"
+  },
+  "author": "INDEC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/indec-it/seed-backend-node/issues"
+  },
+  "homepage": "https://github.com/indec-it/seed-backend-node#readme",
+  "engines": {
+    "node": "6.11"
+  }
+}
