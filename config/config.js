@@ -9,6 +9,8 @@ class Config {
     app.use(require('morgan')('combined'));
 
     require('node-friendly-response');
+
+    require('../app/helpers/mongoose').configure();
   }
 
 }
