@@ -9,6 +9,7 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
 
   user_id: { type: String, required: true, index: true, unique: true },
+  segment: { type: Schema.Types.ObjectId, ref: 'Segment' }
 
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'modified_at' }
