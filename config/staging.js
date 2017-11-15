@@ -5,7 +5,7 @@ class Staging extends Config {
 
   static configure(app) {
     super.configure(app);
-    app.use(require('morgan')('dev'));
+    app.use(require('morgan')('combined'));
     app.use(require('cors')());
   }
 
