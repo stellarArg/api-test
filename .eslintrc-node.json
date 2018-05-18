@@ -1,0 +1,27 @@
+{
+  "plugins": [
+    "promise"
+  ],
+  "extends": [
+    "./.eslintrc-base.json",
+    "./.eslintrc-babel.json",
+    "plugin:promise/recommended"
+  ],
+  "env": {
+    "browser": false,
+    "node": true
+  },
+  "rules": {
+    "promise/no-nesting": "off",
+    "promise/no-callback-in-promise": "off",
+    "promise/avoid-new": "off",
+    "lodash/prefer-lodash-method": [
+      2,
+      {
+        "ignoreMethods": [
+          "find"
+        ]
+      }
+    ]
+  }
+}

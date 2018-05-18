@@ -1,0 +1,26 @@
+image: node:6-alpine
+cache:
+  key: "6-alpine"
+  paths:
+    - node_modules/
+
+before_script:
+  - yarn install
+
+test:
+  script:
+    - npm test
+  tags:
+    - docker
+
+build:
+  stage: build
+  artifacts:
+    paths:
+      - dist/
+  script:
+    - npm run build
+  only:
+    - master
+  tags:
+    - docker

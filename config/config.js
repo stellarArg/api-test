@@ -1,15 +1,21 @@
-class Config {
+import BodyParser from 'body-parser';
+import CookieParser from 'cookie-parser';
+import Morgan from 'morgan';
+import 'node-friendly-response';
+import DotEnv from 'dotenv';
+
+import MongooseConfig from '../src/helpers/mongoose';
+
+DotEnv.load();
+
+const {SERVER_BODY_LIMIT, MORGAN_FORMAT} = process.env;
+
+export default class Config {
     static configure(app) {
-        app.use(require('body-parser').json());
-        app.use(require('body-parser').urlencoded({extended: true}));
-
-        app.use(require('cookie-parser')());
-        app.use(require('morgan')('combined'));
-
-        require('node-friendly-response');
-
-        require('../app/helpers/mongoose').configure();
+        app.use(BodyParser.json(SERVER_BODY_LIMIT ? {limit: SERVER_BODY_LIMIT} : undefined));
+        app.use(BodyParser.urlencoded({extended: true}));
+        app.use(CookieParser());
+        app.use(Morgan(MORGAN_FORMAT || 'dev'));
+        MongooseConfig.configure();
     }
 }
-
-module.exports = Config;

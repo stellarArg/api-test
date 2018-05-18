@@ -1,11 +1,9 @@
-const Config = require('./config');
+import Cors from 'cors';
+import Config from './config';
 
-class Prod extends Config {
+export  default class Production extends Config {
     static configure(app) {
         super.configure(app);
-        app.use(require('morgan')('combined'));
-        app.use(require('cors')());
+        app.use(Cors());
     }
 }
-
-module.exports = Prod;

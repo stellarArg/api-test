@@ -1,15 +1,12 @@
-const Config = require('./config');
+import Cors from 'cors';
+import Config from './config';
 
-class Dev extends Config {
+export  default class Development extends Config {
     static configure(app) {
         super.configure(app);
-        app.use(require('morgan')('dev'));
-
-        app.use(require('cors')({
+        app.use(Cors({
             credentials: true,
             origin: /^http:\/\/localhost/
         }));
     }
 }
-
-module.exports = Dev;
