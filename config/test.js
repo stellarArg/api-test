@@ -1,9 +1,7 @@
-const Config = require('./config');
+import Config from './config';
 
-class Test extends Config {
+export  default class Test extends Config {
     static configure(app) {
         super.configure(app);
     }
 }
-
-module.exports = Test;
