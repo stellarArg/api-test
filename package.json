@@ -39,6 +39,10 @@
       "teamcity"
     ],
     "check-coverage": true,
+    "lines": 0,
+    "statements": 0,
+    "functions": 0,
+    "branches": 0,
     "exclude": [
       "coverage/**/*.js",
       "commitlint.config.js",
