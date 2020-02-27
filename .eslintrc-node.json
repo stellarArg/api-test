@@ -1,0 +1,54 @@
+{
+  "plugins": [
+    "promise",
+    "lodash"
+  ],
+  "globals": {
+    "root_path": "readonly",
+    "abs_path": "readonly",
+    "include": "readonly",
+    "base_dir": "readonly",
+    "abs_root_path": "readonly"
+  },
+  "extends": [
+    "./.eslintrc-base.json",
+    "plugin:promise/recommended",
+    "plugin:lodash/recommended",
+    "plugin:import/warnings"
+  ],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "promise/always-return": "error",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/catch-or-return": "error",
+    "promise/no-native": "off",
+    "promise/no-nesting": "error",
+    "promise/no-promise-in-callback": "error",
+    "promise/no-callback-in-promise": "error",
+    "promise/avoid-new": "off",
+    "promise/no-new-statics": "error",
+    "promise/no-return-in-finally": "warn",
+    "promise/valid-params": "error",
+    "lodash/import-scope": [2, "method"],
+    "lodash/prop-shorthand": [
+      "error",
+      "never"
+    ],
+    "lodash/matches-prop-shorthand": [
+      "error",
+      "never"
+    ],
+    "lodash/chain-style": 2,
+    "lodash/prefer-lodash-method": [
+      2,
+      {
+        "ignoreMethods": [
+          "find"
+        ]
+      }
+    ]
+  }
+}

@@ -1,13 +1,18 @@
+// eslint-disable-next-line
 const find = require('lodash/find');
 
 class CountriesController {
     static fetch(req, res, next) {
-        const countries = require('../data/countries.json');
-        
-        if (req.query) {
+        try {
+            const countries = require('../data/countries.json');
+
+            if (req.query.filter) {
             // Hagan algo para filtrar datos
+            }
+            res.send(countries);
+        } catch(err) {
+            next(err);
         }
-        res.send(countries);
     }
 }
 

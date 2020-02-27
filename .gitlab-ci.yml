@@ -1,0 +1,28 @@
+image: node:12-alpine
+cache:
+  key: "12-alpine"
+  paths:
+    - node_modules/
+before_script:
+  - npm ci
+test:
+  script:
+    - npm test
+  tags:
+    - docker
+build:
+  stage: build
+  artifacts:
+    paths:
+      - dist/
+  script:
+    - npm run build
+  only:
+    - master
+    - develop
+    - tags
+  except:
+    - branches
+    - merge_requests
+  tags:
+    - docker
