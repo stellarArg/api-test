@@ -26,10 +26,6 @@ if (DB_CONFIG && DB_DRIVER) {
         db = knex({
             client: DB_DRIVER,
             connection: JSON.parse(DB_CONFIG),
-            pool: {
-                min: 0,
-                max: 100
-            },
             migrations: {
                 tableName: 'knex_migrations',
                 directory: `${basePath}/db/migrations`

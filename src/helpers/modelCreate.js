@@ -82,15 +82,16 @@ class ModelCreate {
         if (isArray(props) && head(props) instanceof Object) {
             const inserts = map(props, prop => ({
                 id: uuid(),
-                ...this.jsonToString(prop),
+                ...prop,
                 __v: 0,
                 createdAt: new Date()
             }));
             if (this.transaction) {
-                return this.transaction(this.tableName).insert(inserts).returning(this.selectableProps)
+                return this.transaction(this.tableName).insert(inserts)
                     .timeout(this.timeout);
             }
-            return this.knex.insert(inserts).returning(this.selectableProps)
+            console.log(inserts[0]);
+            return this.knex.insert(inserts)
                 .into(this.tableName).timeout(this.timeout);
         }
         return Promise.reject('not a valid array of data');
