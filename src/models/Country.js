@@ -24,6 +24,17 @@ class CountryModel extends createModel {
             selectableProps
         });
     }
+
+    find({
+        skip, filter = {}
+    }) {
+        const results = this.knex.select()
+            .from(this.tableName)
+            .where(filter)
+            .limit(PAGE_SIZE).offset(toNumber(PAGE_SIZE) * toNumber(skip));
+
+        return results;
+    }
 }
 
 module.exports = knex => new CountryModel({knex});

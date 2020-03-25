@@ -200,12 +200,12 @@ class ModelCreate {
             if (this.transaction) {
                 return this.transaction(this.tableName).update({
                     deleted: true,
-                    deletedat: new Date()
+                    deletedAt: new Date()
                 }).whereIn('id', ids).timeout(this.timeout);
             }
             return this.knex.update({
                 deleted: true,
-                deletedat: new Date()
+                deletedAt: new Date()
             }).from(this.tableName).whereIn('id', ids).timeout(this.timeout);
         }
     }
