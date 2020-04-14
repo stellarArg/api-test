@@ -1,4 +1,4 @@
-# CNP-EXP. API
+# SEED-BE. API
 
 This is a RestAPI
 The project use `knex` and `mongoose` as database connectors.
