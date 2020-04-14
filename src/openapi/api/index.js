@@ -1,2 +1,3 @@
+const country = require('./country');
 
-module.exports = {};
+module.exports = {...country};

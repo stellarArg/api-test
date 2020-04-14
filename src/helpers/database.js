@@ -26,8 +26,9 @@ if (DB_CONFIG && DB_DRIVER) {
         db = knex({
             client: DB_DRIVER,
             connection: JSON.parse(DB_CONFIG),
+            useNullAsDefault: true,
             pool: {
-                min: 0,
+                min: 1,
                 max: 100
             },
             migrations: {
