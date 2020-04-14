@@ -1,8 +1,7 @@
-import mongoose from 'mongoose';
-import {every, concat} from 'lodash';
-import {services} from '@indec/heimdall';
+const every = require('lodash/every');
+const concat = require('lodash/concat');
 
-import pkg from '../../package';
+const pkg = root_path('package.json');
 
 /**
  * Creates the status object
@@ -11,30 +10,28 @@ import pkg from '../../package';
  * @returns {{name, status: string, deps}} Returns the status of this app.
  */
 const generateStatus = (deps, optionalDeps = []) => ({
+    deps: concat(deps, optionalDeps),
     name: pkg.name,
     status: every(deps, ({status: 'ok'}))
         ? every(optionalDeps, ({status: 'ok'})) ? 'ok' : 'degraded'
-        : 'down',
-    deps: concat(deps, optionalDeps)
+        : 'down'
 });
 
-export default class StatusService {
+class StatusService {
     static getStatus() {
         return generateStatus([StatusService.getMongoDBStatus()]);
     }
 
     static getHealth() {
-        return StatusService.getHeimdallStatus().then(
-            heimdallStatus => generateStatus([StatusService.getMongoDBStatus()], [heimdallStatus])
-        );
-    }
-
-    static getHeimdallStatus() {
-        return services.StatusService.fetchReady();
+        return StatusService.getMongoDBStatus();
     }
 
     static getMongoDBStatus() {
-        const connected = mongoose.connection.readyState === 1;
-        return {name: 'MongoDB', status: connected ? 'ok' : 'down'};
+        return {
+            name: 'PostgreSQL',
+            status: process.env.database || 'down'
+        };
     }
 }
+
+module.exports = StatusService;

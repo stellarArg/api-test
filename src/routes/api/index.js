@@ -1,26 +1,16 @@
-import fs from 'fs';
-import winston from 'winston';
-import {Router} from 'express';
-import {forEach, reject, replace} from 'lodash';
+const {Router} = require('express');
+const requireDir = require('require-dir');
+const forEach = require('lodash/forEach');
 
-const importModule = file => require(`./${file}`).default;
+const logger = include('helpers/logger');
 
-const loadModules = (folder, router) => {
-    // Loading modules dynamically
+module.exports = router => {
     forEach(
-        reject(
-            fs.readdirSync(folder),
-            file => file === 'index.js'
-        ),
-        file => {
-            const module = replace(file, '.js', '');
-            winston.info('Loading %s api...', module);
-            router.use(`/${module}`,importModule(file)(Router()));
+        requireDir('.', {recurse: true}),
+        (module, name) => {
+            logger.info(`Loading ${name} api...`);
+            router.use(`/${name}`, module(Router()));
         }
     );
-};
-
-export default router => {
-    loadModules('./src/routes/api', router);
     return router;
 };

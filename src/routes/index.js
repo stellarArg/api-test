@@ -1,20 +1,38 @@
-import {Router} from 'express';
-import AuthenticateMiddleware from './middlewares/authenticate';
-import {AppInformation} from '../model';
-import {StatusController} from '../controllers';
+const {Router} = require('express');
+const get = require('lodash/get');
+const {
+    authenticate, errorHandler
+} = require('./middleWares');
 
-import Api from './api';
-import Mobile from './mobile';
+const {StatusController} = include('controllers');
+const Logger = include('helpers/logger');
+/**
+ * @class Routes
+ * links Routes of Application
+ * @description
+ * <b> /ping </b> returns current version of app </br>
+ * <b> /ready </b> Check if everything is ok and running </br>
+ * <b> /health </b> Check if external agents are ok </br>
+ * <b> /public-api </b> Links publics for external and not logging request /br>
+ * <b> /api </b> main link, this manage all functions of be </br>
+ * <b> * </b> returns error page when not matching url can be found </br>
+ */
+const localRoute = route => {
+    route.get('/ping', StatusController.ping);
+    route.get('/ready', StatusController.getStatus);
+    route.get('/health', StatusController.getHealth);
+    route.get('/swagger', (_, res) => res.send(get(include('openapi'), 'components')));
+    return route;
+};
 
-export default class Routes {
+class Routes {
     static configure(app) {
-        app.get('/version', (req, res) => 
-            AppInformation.find().sort({$natural: -1}).then(app => res.send({app: app[0]}))
-        );
-        app.get('/ping', StatusController.ping);
-        app.get('/ready', StatusController.getStatus);
-        app.get('/health', StatusController.getHealth);
-        app.use('/api', AuthenticateMiddleware(), Api(Router()));
-        app.use('/mobile', AuthenticateMiddleware({handleTokenExpired: true}), Mobile(Router()));
+        app.use('/', localRoute(Router()));
+        app.use('/api', authenticate, require('./api')(Router()));
+        Logger.info('Loading public-api...');
+        app.use('/public-api', require('./public-api')(Router()));
+        app.use(errorHandler);
     }
 }
+
+module.exports = Routes;

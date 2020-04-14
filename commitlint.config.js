@@ -2,7 +2,9 @@ module.exports = {
     rules: {
         'body-leading-blank': [1, 'always'],
         'footer-leading-blank': [1, 'always'],
-        'header-max-length': [2, 'always', 72],
+        'header-max-length': [2, 'always', 100],
+        'body-max-line-length': [2, 'always', 80],
+        'footer-max-line-length': [2, 'always', 80],
         'scope-case': [2, 'always', 'camel-case'],
         'subject-case': [
             2,
@@ -18,6 +20,7 @@ module.exports = {
             'always',
             [
                 'build',
+                'bump',
                 'ci',
                 'docs',
                 'feat',

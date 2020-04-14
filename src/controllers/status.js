@@ -1,10 +1,10 @@
-import {StatusService} from '../services';
-import PKG from '../../package';
+const {StatusService} = require('../services');
+const pkg = require('../../package');
 
-export default class StatusController {
+class StatusController {
     static ping(req, res, next) {
         try {
-            res.send({version: PKG.version});
+            res.send({version: pkg.version});
         } catch (err) {
             next(err);
         }
@@ -18,9 +18,14 @@ export default class StatusController {
         }
     }
 
-    static getHealth(req, res, next) {
-        StatusService.getHealth().then(
-            status => res.send(status)
-        ).catch(next);
+    static async getHealth(req, res, next) {
+        try {
+            const status = await StatusService.getHealth();
+            res.send(status);
+        } catch (err) {
+            next(err);
+        }
     }
 }
+
+module.exports = StatusController;

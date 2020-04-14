@@ -1,9 +1,3 @@
-import DotEnv from 'dotenv';
-import winston  from 'winston';
-import App from './src/index';
+require('dotenv').config();
 
-DotEnv.load();
-
-const {NODE_ENV, PORT} = process.env;
-
-App.listen(PORT, () => winston.info('Started at port %s in %s environment..', PORT, NODE_ENV));
+require('./src');

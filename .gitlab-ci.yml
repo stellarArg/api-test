@@ -1,18 +1,15 @@
-image: node:6-alpine
+image: node:12-alpine
 cache:
-  key: "6-alpine"
+  key: "12-alpine"
   paths:
     - node_modules/
-
 before_script:
-  - yarn install
-
+  - npm ci
 test:
   script:
     - npm test
   tags:
     - docker
-
 build:
   stage: build
   artifacts:
@@ -22,5 +19,10 @@ build:
     - npm run build
   only:
     - master
+    - develop
+    - tags
+  except:
+    - branches
+    - merge_requests
   tags:
     - docker

@@ -1,65 +1,51 @@
-const gulp = require('gulp');
-const plugins = require('gulp-load-plugins');
-const $ = plugins();
+const {
+    dest, parallel, series, src
+} = require('gulp');
+const $ = require('gulp-load-plugins')();
+const rename = require('gulp-rename');
+const gulpEslint = require('gulp-eslint');
 
-gulp.task('eslint', () =>
-    gulp.src(['**/*.js', '!node_modules/**', '!coverage/**', '!dist/**'])
-        .pipe($.eslint())
-        .pipe($.eslint.format())
-        .pipe($.eslint.failAfterError())
-);
+const eslint = () => src(['**/*.js', '!node_modules/**', '!coverage/**', '!dist/**', '!db/**'])
+    .pipe(gulpEslint())
+    .pipe(gulpEslint.format())
+    .pipe(gulpEslint.failAfterError());
 
-gulp.task('mocha', () =>
-    gulp.src('src/**/*.js')
-        .pipe($.istanbul())
-        .on('finish',
-            () => gulp.src('test/**/*.test.js')
-                .pipe($.mocha({reporter: 'spec'}))
-                .pipe($.istanbul.writeReports())
-                .on('error', process.exit.bind(process, 1))
-                .on('end', process.exit.bind(process))
-        )
-);
-
-gulp.task('server', () => $.nodemon({
+const server = () => $.nodemon({
     script: './',
     env: {NODE_ENV: process.env.NODE_ENV || 'development'},
     ignore: ['./test/**/*.js'],
-    nodeArgs: ['--debug']
-}));
+    nodeArgs: ['--inspect']
+});
 
-gulp.task('clean:dist', () => require('del')('dist'));
+const clean = () => require('del')('dist');
 
-gulp.task('copy:dist', () =>
-    gulp
-        .src([
-            'index.js',
-            './config/**',
-            './src/**'
-        ], {base: '.'})
-        .pipe(gulp.dest('dist'))
-);
+const copy = () => src(
+    [
+        './src/**',
+        './db/**',
+        './public/**',
+        'childProcess.js',
+        'index.js',
+        'knexfile.js'
+    ], {base: '.'}
+).pipe(dest('dist'));
 
-gulp.task('package', () =>
-    gulp.src('./package.json')
-        .pipe($.jsonEditor(json => {
-            delete json.devDependencies;
-            return json;
-        }, {end_with_newline: true}))
-        .pipe(gulp.dest('dist/'))
-);
+const copyEnv = env => () => src(
+    [env ? `.env-${env}` : '.env'], {base: '.'}
+).pipe(rename('.env')).pipe(dest('dist/'));
 
-gulp.task('dist', () =>
-    gulp.run(['copy:dist', 'package'])
-);
+const distPackage = () => src('./package.json')
+    .pipe($.jsonEditor(json => {
+        delete json.devDependencies;
+        delete json.nodemonConfig;
+        return json;
+    }, {end_with_newline: true}))
+    .pipe(dest('dist/'));
 
-gulp.task('build', ['clean:dist'], () =>
-    gulp.run(['dist'])
-);
+const dist = parallel(copy, distPackage);
 
-gulp.task('build:uat', ['clean:dist'], () =>
-    gulp.run(['dist'])
-);
-
-gulp.task('test', ['eslint']);
-gulp.task('dev', ['server']);
+exports.eslint = eslint;
+exports.dev = server;
+exports['build-dev'] = series(clean, dist, copyEnv());
+exports['build-uat'] = series(clean, dist, copyEnv('uat'));
+exports.build = series(clean, dist, copyEnv('prod'));
