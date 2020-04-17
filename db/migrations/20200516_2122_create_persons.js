@@ -1,10 +1,12 @@
 exports.up = function(knex) {
     return knex.schema
-        .createTable('country', function (table) {
+        .createTable('persons', function (table) {
             table.string('id');
             table.string('name', 255);
-            table.string('code', 255);
-            table.string('iso2', 2);
+            table.string('surname', 255);
+            table.string('email', 255);
+            table.string('gender', 255);
+            table.string('avatar', 255);
             table.boolean('deleted');
             table.timestamp('createdAt');
             table.timestamp('updatedAt');

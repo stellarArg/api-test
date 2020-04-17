@@ -3,12 +3,12 @@ const upperFirst = require('lodash/upperFirst');
 const includes = require('lodash/includes');
 const reduce = require('lodash/reduce');
 
-const models = reduce(fs.readdirSync(__dirname), (modelsObj, filename) => {
+const controllers = reduce(fs.readdirSync(__dirname), (controllersObj, filename) => {
     if (!includes(filename, 'index.js')) {
         // eslint-disable-next-line lodash/prefer-lodash-method
-        modelsObj[`${upperFirst(filename.replace('.js', ''))}Controller`] = include(`controllers/${filename}`);
+        controllersObj[`${upperFirst(filename.replace('.js', ''))}Controller`] = include(`controllers/${filename}`);
     }
-    return modelsObj;
+    return controllersObj;
 }, {});
 
-module.exports = models;
+module.exports = controllers;

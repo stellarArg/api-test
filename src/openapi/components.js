@@ -26,6 +26,24 @@ module.exports = {
                 format: 'uuid'
             }
         },
+        Persons: {
+            type: 'object',
+            properties: {
+                id: {
+                    type: 'string',
+                    format: 'uuid',
+                    nullable: true
+                },
+                name: {type: 'string'},
+                surname: {type: 'string'},
+                email: {
+                    type: 'string',
+                    format: 'email'
+                },
+                gender: {type: 'string'},
+                avatar: {type: 'string'}
+            }
+        },
         Error: {
             type: 'object',
             required: [
