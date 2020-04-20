@@ -22,7 +22,10 @@ class CountryController {
     static async create(req, res, next) {
         try {
             const result = await Persons.insertOne(req.body);
-            res.send(result);
+            res.send({
+                success:true,
+                result
+            });
         } catch (error) {
             next(error);
         }
