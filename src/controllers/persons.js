@@ -12,7 +12,7 @@ class CountryController {
 
     static async fetchOne(req, res, next) {
         try {
-            const persons = await Persons.findOne({id: req.params.id});
+            const persons = await Persons.findOne(req.params);
             res.send(persons);
         } catch (error) {
             next(error);
@@ -33,8 +33,11 @@ class CountryController {
 
     static async save(req, res, next) {
         try {
-            const result = await Persons.updateOne({id: req.params.id}, req.body);
-            res.send(result);
+            const result = await Persons.updateOne(req.params, req.body);
+            res.send({
+                success:true,
+                result
+            });
         } catch (error) {
             next(error);
         }
@@ -43,7 +46,10 @@ class CountryController {
     static async delete(req, res, next) {
         try {
             const result = await Persons.deleteOne(req.params.id);
-            res.send(result);
+            res.send({
+                success:true,
+                result
+            });
         } catch (error) {
             next(error);
         }
